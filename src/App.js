@@ -39,7 +39,7 @@ const App = () => {
   const [notes, setNotes] = useState([
     { id: 1, title: 'Pierwsza notatka', description: 'Bajo jajo bajo jajo' },
     { id: 2, title: 'Druga notatka', description: '53.14079631543677, 23.16900463548845' },
-    { id: 3, title: 'Trzecia notatka', description: '' },
+    { id: 3, title: 'Trzecia notatka', description: 'https://github.com/SomeAlienBoi69/React' },
     { id: 4, title: 'Czwarta notatka', description: 'abcddsf' },
   ]);
 
@@ -47,7 +47,7 @@ const App = () => {
     // Tu powinna być logika do edytowania notatki, ale nie mam pojęcia jak to zrobić XDDD
   };
 
-  // Usuwa notatkę (Pojawia się spowrotem po odświeżeniu strony jak coś)
+  // Usuwa notatkę (Pojawia się z powrotem po odświeżeniu strony jak coś)
   const Delete = (id) => {
     setNotes(notes.filter(note => note.id !== id));
   };
