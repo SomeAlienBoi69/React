@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
+import './Modal.css';
+import './note.css';
 
 // Komponent Note reprezentuje indywidualną notatkę z tytułem i opisem
-const Note = ({ note, onEdit, onDelete }) => {
+const Note = ({ title, description, note, onEdit, onDelete }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Przełącza widoczność opisu notatki
@@ -11,13 +13,13 @@ const Note = ({ note, onEdit, onDelete }) => {
   };
 
   return (
-    <div>
-      <h3 onClick={toggleDescription}>{note.title}</h3>
+    <div class="notes">
+      <h3 class="notetxt" onClick={toggleDescription}>{title}</h3>
       {isVisible && (
-        <div>
-          <p>{note.description}</p>
-          <button onClick={() => onEdit(note.id)}>Edytuj</button>
-          <button onClick={() => onDelete(note.id)}>Usuń</button>
+        <div class="desc">
+          <p>{description}</p>
+          <button onClick={onEdit}>Edytuj</button>
+          <button onClick={onDelete}>Usuń</button>
         </div>
       )}
     </div>
@@ -33,7 +35,58 @@ const NotesList = ({ notes, onEdit, onDelete }) => {
       ))}
     </div>
   );
+
+  
+
 };
+
+const Modal = ({ isOpen, onClose, onSave, initialTitle, initialDescription }) => {
+  const [title, setTitle] = React.useState(initialTitle);
+  const [description, setDescription] = React.useState(initialDescription);
+
+  const noteSave = () => {
+    onSave(title, description);
+    onClose();
+  };
+  
+  React.useEffect(() => {
+    setTitle(initialTitle);
+    setDescription(initialDescription);
+  }, [initialTitle, initialDescription, isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2>Edytuj {initialTitle}</h2>
+        <label>
+          Title:
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            style={{marginBottom: '10px', width: '100%'}}
+          />
+        </label>
+        <label>
+          Description:
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            style={{marginBottom: '10px', width:'100%'}}
+          />
+        </label>
+        <div>
+          <button onClick={noteSave} style={{cursor: 'pointer'}}>Zapisz</button>
+          <button onClick={onClose} style={{cursor: 'pointer', marginLeft:'10px'}}>Anuluj</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 
 const App = () => {
   const [notes, setNotes] = useState([
@@ -42,22 +95,70 @@ const App = () => {
     { id: 3, title: 'Trzecia notatka', description: 'https://github.com/SomeAlienBoi69/React' },
     { id: 4, title: 'Czwarta notatka', description: 'abcddsf' },
   ]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentNoteId, setCurrentNoteId] = useState(null);
+  const [currentTitle, setCurrentTitle] = useState('');
+  const [currentDescription, setCurrentDescription] = useState('');
 
-  const Edit = (id) => {
-    // Tu powinna być logika do edytowania notatki, ale nie mam pojęcia jak to zrobić XDDD
+  const openModal = (id, title, description) => {
+    setCurrentNoteId(id);
+    setCurrentTitle(title);
+    setCurrentDescription(description);
+    setIsModalOpen(true);
   };
 
-  // Usuwa notatkę (Pojawia się z powrotem po odświeżeniu strony jak coś)
+  const saveNote = (newTitle, newDescription) => {
+    if (newTitle !== '') {
+    TitleChange(currentNoteId, newTitle);
+    }
+    if (newDescription !== '') {
+    DescriptionChange(currentNoteId, newDescription);
+    }
+    setIsModalOpen(false);
+  };
+
+  const TitleChange = (id, newTitle) => {
+    setNotes(prevNotes =>
+      prevNotes.map(note =>
+        note.id === id ? { ...note, title: newTitle } : note
+      )
+    );
+  };
+
+  const DescriptionChange = (id, newDescription) => {
+    setNotes(prevNotes =>
+      prevNotes.map(note =>
+        note.id === id ? { ...note, description: newDescription } : note
+      )
+    );
+  };
+
+  // Usuwa notatkę (Pojawia się z powrotem po odświeżeniu strony)
   const Delete = (id) => {
     setNotes(notes.filter(note => note.id !== id));
   };
 
   return (
-    <div className="App">
-      <h1>Super Wypasiony System Notatek 5000</h1>
-      <NotesList notes={notes} onEdit={Edit} onDelete={Delete} />
-    </div>
+    <div>  
+    {notes.map(note => (
+      <Note
+        key={note.id}
+        title={note.title}
+        description={note.description}
+        onDelete={() => Delete(note.id)}
+        onEdit={() => openModal(note.id, note.title, note.description)}
+      />
+    ))}
+    <Modal
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      onSave={saveNote}
+      initialTitle={currentTitle}
+      initialDescription={currentDescription}
+    />
+  </div>
   );
+  
 };
 
 export default App;
