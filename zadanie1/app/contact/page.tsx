@@ -1,9 +1,9 @@
 export default function Contact() {
     return (
         <div>
-            <header>
+            <head>
                 <title>Kontakt</title>
-            </header>
+            </head>
             <h1>Kontakt: 733 066 194</h1>
         </div>
     );

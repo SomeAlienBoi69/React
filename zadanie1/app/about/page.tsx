@@ -1,9 +1,9 @@
 export default function About() {
     return (
         <div>
-            <header>
+            <head>
                 <title>O Nas</title>
-            </header>
+            </head>
             <h1>Bajo Jajo</h1>
         </div>
     );

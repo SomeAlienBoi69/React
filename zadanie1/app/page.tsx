@@ -2,8 +2,10 @@ export default function Home() {
   return (
     <html>
       <body>
-        <header>
+        <head>
           <title>Strona Główna</title>
+        </head>
+        <header>
         </header>
       </body>
     </html>
