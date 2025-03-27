@@ -1,3 +1,7 @@
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+
+
 export default function Profile({ params }: { params: { id: string } }) {
 
     return (
