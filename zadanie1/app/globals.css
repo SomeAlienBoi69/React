@@ -26,6 +26,9 @@ body {
 }
 
 nav {
+  display: flex;
+  align-items: center;
+  width: fit-content;
   border: 2px;
   border-style: ridge;
   margin: 2%;

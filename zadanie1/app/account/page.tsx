@@ -4,9 +4,9 @@ import { useSearchParams } from 'next/navigation';
 export default function Account() {
 
     return (
-        <html>
-
-        </html>
+        <main>
+            <h1>Konto</h1>
+        </main>
     )
 
 }

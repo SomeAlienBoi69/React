@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <nav>
               <Image src="/logo.png" width={100} height={100} alt="logo"/>
               <ul>
-                <li><Link href="/app">Home</Link></li>
+                <li><Link href="/home">Home</Link></li>
                 <li><Link href="/about">About</Link></li>
                 <li><Link href="/contact">Contact</Link></li>
               </ul>
